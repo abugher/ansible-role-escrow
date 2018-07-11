@@ -1,0 +1,38 @@
+---
+system_groups:
+  - 'escrow'
+system_users:
+  - 'escrow'
+template_files:
+  - owner:              'root'
+    group:              'root'
+    mode:               '0755'
+    src:                "{{ role_path }}/templates/bin/tend_storage.j2"
+    dest:               '/usr/local/bin/tend_storage'
+install_files:
+  - owner:              'root'
+    group:              'root'
+    mode:               '0644'
+    src:                "{{ role_path }}/files/cron.d/tend_storage"
+    dest:               '/etc/cron.d/tend_storage'
+symlinks:
+  - owner:              'root'
+    group:              'root'
+    src:                '/usr/local/bin/tend_storage'
+    dest:               '/usr/local/bin/s'
+authorized_keys:
+  # These bare hostnames should be removed, and placed in an array in global
+  # configuration.  If global variables can be made to agree with host-role
+  # meta files, that would be great, too.  And I'll need to figure out how to
+  # reference that array here.  So I'm just going to skip that for now and try
+  # to get this role working, first.
+  - user:               'escrow'
+    keyfile:            "{{ role_path }}/../neuron/files/ssh_keys/root.id_rsa.pub"
+  - user:               'escrow'
+    keyfile:            "{{ role_path }}/../synapse/files/ssh_keys/root.id_rsa.pub"
+  - user:               'escrow'
+    keyfile:            "{{ role_path }}/../files/files/ssh_keys/root.id_rsa.pub"
+known_hosts:
+  - 'neuron'
+  - 'synapse'
+  - 'files'
