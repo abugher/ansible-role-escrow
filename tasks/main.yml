@@ -5,4 +5,13 @@
 - include:              '../tasks/template_files.yml'
 - include:              '../tasks/symlinks.yml'
 - include:              '../tasks/authorized_keys.yml'
+  vars:
+    authorized_keys:
+      - user:           'escrow'
+        keyfile:        "../../inventory/hosts/{{ member }}/users/root/files/ssh_keys/id_rsa.pub"
+  with_items:           "{{ groups['escrow'] }}"
+  loop_control:
+    loop_var:           'member'
 - include:              '../tasks/known_hosts.yml'
+  vars:
+    known_hosts:        "{{ groups['escrow'] }}"
