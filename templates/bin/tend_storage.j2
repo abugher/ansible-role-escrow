@@ -45,7 +45,7 @@ fail() {
 
 # buddy up
 buddies=()
-for buddy in neuron synapse files; do
+for buddy in {{ groups['escrow'] }}; do
   if test $buddy = $(hostname); then
     continue
   fi
