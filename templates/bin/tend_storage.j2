@@ -45,7 +45,7 @@ fail() {
 
 # buddy up
 buddies=()
-for buddy in {{ groups['escrow'] }}; do
+for buddy in {{ groups['escrow']|join(' ') }}; do
   if test $buddy = $(hostname); then
     continue
   fi
