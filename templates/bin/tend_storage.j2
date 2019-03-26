@@ -70,7 +70,7 @@ if test ! -e "${PASS_PHRASE_FILE_PATH}"; then
     if 
       ssh $E_USER@$buddy test -e "'${PASS_PHRASE_FILE_PATH}'"
     then
-      scp $E_USER@$buddy:"'${PASS_PHRASE_FILE_PATH}'" $PASS_PHRASE_FILE_PATH \
+      scp $E_USER@$buddy:"${PASS_PHRASE_FILE_PATH}" $PASS_PHRASE_FILE_PATH \
         || fail $ERR_SCP "Failed to scp ${PASS_PHRASE_FILE_PATH}."
       chown $E_USER $PASS_PHRASE_FILE_PATH \
         || fail $ERR_CHOWN_FILE "Failed to chown ${PASS_PHRASE_FILE_PATH}."
