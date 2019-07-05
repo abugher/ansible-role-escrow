@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role:       'root_keys'
+    when:       skipdeps is not defined
