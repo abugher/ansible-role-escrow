@@ -111,9 +111,11 @@ fi
 {% endif %}
 
 
-if 
-  test -e /etc/init.d/transmission-daemon \
-  && mount | grep -q " $TRANSMISSION_STORAGE "
-then
-  /usr/sbin/service transmission-daemon start || fail $ERR_TRANS "Failed to start service:  transmission-daemon"
-fi
+for service in openvpn transmission-daemon; do
+  if 
+    test -e /etc/init.d/"${service}" \
+    && mount | grep -q " $TRANSMISSION_STORAGE "
+  then
+    PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin /usr/sbin/service "${service}" start || fail $ERR_TRANS "Failed to start service:  ${service}"
+  fi
+done
