@@ -24,6 +24,7 @@
  PASS_PHRASE_FILE_NAME='pass_phrase.txt'
  PASS_PHRASE_FILE_PATH="${RAMFS_MOUNT_POINT}/${PASS_PHRASE_FILE_NAME}"
   INIT_STORAGE_COMMAND='s'
+ GET_PASS_ONLY_COMMAND='p'
        ERR_MKDIR_RAMFS=1
        ERR_MOUNT_RAMFS=2
        ERR_CHOWN_RAMFS=3
@@ -96,7 +97,8 @@ if ! test -e "${PASS_PHRASE_FILE_PATH}"; then
   fail $ERR_PASS_PHRASE "Failed to obtain pass phrase."
 fi
 
-
+ 
+if ! test $GET_PASS_ONLY_COMMAND = $(echo $0 | sed 's/.*\///g'); then
 {% if encrypted_storage is defined %}
 {% for item in encrypted_storage %}
   if ! test -e "/dev/mapper/{{ item.name }}"; then
@@ -109,6 +111,7 @@ fi
   fi
 {% endfor %}
 {% endif %}
+fi
 
 
 for service in openvpn transmission-daemon; do

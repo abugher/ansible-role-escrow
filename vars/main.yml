@@ -20,5 +20,9 @@ symlinks:
     group:              'root'
     src:                '/usr/local/bin/tend_storage'
     dest:               '/usr/local/bin/s'
+  - owner:              'root'
+    group:              'root'
+    src:                '/usr/local/bin/tend_storage'
+    dest:               '/usr/local/bin/p'
 allow_users:
   - 'escrow'
