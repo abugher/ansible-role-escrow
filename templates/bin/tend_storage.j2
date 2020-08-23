@@ -97,7 +97,7 @@ if ! test -e "${PASS_PHRASE_FILE_PATH}"; then
   fail $ERR_PASS_PHRASE "Failed to obtain pass phrase."
 fi
 
- 
+
 if ! test $GET_PASS_ONLY_COMMAND = $(echo $0 | sed 's/.*\///g'); then
 {% if encrypted_storage is defined %}
 {% for item in encrypted_storage %}
@@ -105,9 +105,9 @@ if ! test $GET_PASS_ONLY_COMMAND = $(echo $0 | sed 's/.*\///g'); then
     /sbin/cryptsetup luksOpen "{{ item.backing_device }}" "{{ item.name }}" < "${PASS_PHRASE_FILE_PATH}" \
       || fail $ERR_LUKSOPEN "Failed to luksOpen:  {{ item.backing_device }} as {{ item.name }}"
   fi
-  if ! mount | grep -q " /{{ item.name }} "; then
-    /bin/mount "/dev/mapper/{{ item.name }}" "/{{ item.name }}" \
-      || fail $ERR_MOUNT "Failed to mount:  /{{ item.name }}"
+  if ! mount | grep -q " {{ item.mount_point }} "; then
+    /bin/mount "/dev/mapper/{{ item.name }}" "/{{ item.mount_point }}" \
+      || fail $ERR_MOUNT "Failed to mount:  /{{ item.mount_point }}"
   fi
 {% endfor %}
 {% endif %}
