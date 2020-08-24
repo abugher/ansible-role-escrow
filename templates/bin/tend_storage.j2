@@ -65,6 +65,11 @@ if ! mount | grep -q " $RAMFS_MOUNT_POINT "; then
     || fail $ERR_CHOWN_RAMFS "Failed to chown ${RAMFS_MOUNT_POINT}."
 fi
 
+# check network
+if ! ip route | grep -q .; then
+  sleep 30
+fi
+
 # copy passphrase
 if test ! -e "${PASS_PHRASE_FILE_PATH}"; then
   for buddy in ${buddies[@]}; do
@@ -122,3 +127,9 @@ for service in openvpn transmission-daemon; do
     PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin /usr/sbin/service "${service}" start || fail $ERR_TRANS "Failed to start service:  ${service}"
   fi
 done
+
+if 
+  test -e /etc/init.d/motion
+then
+  PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin /usr/sbin/service motion restart || fail $ERR_TRANS "Failed to restart service:  motion"
+fi
