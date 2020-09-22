@@ -2,3 +2,5 @@
 dependencies:
   - role:       'root_keys'
     when:       skipdeps is not defined
+  - role:       'ssh_client'
+    when:       skipdeps is not defined
