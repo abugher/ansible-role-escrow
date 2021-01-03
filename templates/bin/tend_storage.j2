@@ -18,11 +18,11 @@
 # the storage pass phrase, and mount storage if possible.
 
 
-                E_USER="{{ e_user }}"
-     RAMFS_MOUNT_POINT="/home/${E_USER}/storage_pass_phrase"
-  TRANSMISSION_STORAGE='/storage'
+                ESCROW_USER="{{ escrow_user }}"
+     RAMFS_MOUNT_POINT="{{ storage_password_mount_point }}"
+  TRANSMISSION_STORAGE="{{ hostvars[groups['transmission'][0]]['encrypted_storage'][0]['mount_point']}}"
  PASS_PHRASE_FILE_NAME='pass_phrase.txt'
- PASS_PHRASE_FILE_PATH="${RAMFS_MOUNT_POINT}/${PASS_PHRASE_FILE_NAME}"
+ PASS_PHRASE_FILE_PATH="{{ storage_password_path }}"
   INIT_STORAGE_COMMAND='s'
  GET_PASS_ONLY_COMMAND='p'
        ERR_MKDIR_RAMFS=1
@@ -55,13 +55,13 @@ done
 
 # mount ramdisk
 if ! mount | grep -q " $RAMFS_MOUNT_POINT "; then
-  sudo -u $E_USER mkdir -p $RAMFS_MOUNT_POINT \
+  sudo -u $ESCROW_USER mkdir -p $RAMFS_MOUNT_POINT \
     || fail $ERR_MKDIR_RAMFS "Failed to mkdir ${RAMFS_MOUNT_POINT}."
 
   mount -t ramfs -o size=100m ramfs $RAMFS_MOUNT_POINT \
     || fail $ERR_MOUNT_RAMFS "Failed to mount ${RAMFS_MOUNT_POINT}."
 
-  chown -R $E_USER $RAMFS_MOUNT_POINT \
+  chown -R $ESCROW_USER $RAMFS_MOUNT_POINT \
     || fail $ERR_CHOWN_RAMFS "Failed to chown ${RAMFS_MOUNT_POINT}."
 fi
 
@@ -74,11 +74,11 @@ fi
 if test ! -e "${PASS_PHRASE_FILE_PATH}"; then
   for buddy in ${buddies[@]}; do
     if 
-      ssh $E_USER@$buddy test -e "'${PASS_PHRASE_FILE_PATH}'"
+      ssh $ESCROW_USER@$buddy test -e "'${PASS_PHRASE_FILE_PATH}'"
     then
-      scp $E_USER@$buddy:"${PASS_PHRASE_FILE_PATH}" $PASS_PHRASE_FILE_PATH \
+      scp $ESCROW_USER@$buddy:"${PASS_PHRASE_FILE_PATH}" $PASS_PHRASE_FILE_PATH \
         || fail $ERR_SCP "Failed to scp ${PASS_PHRASE_FILE_PATH}."
-      chown $E_USER $PASS_PHRASE_FILE_PATH \
+      chown $ESCROW_USER $PASS_PHRASE_FILE_PATH \
         || fail $ERR_CHOWN_FILE "Failed to chown ${PASS_PHRASE_FILE_PATH}."
       chmod 0400 $PASS_PHRASE_FILE_PATH \
         || fail $ERR_CHMOD_FILE "Failed to chmod ${PASS_PHRASE_FILE_PATH}."
