@@ -103,8 +103,8 @@ if ! test -e "${PASS_PHRASE_FILE_PATH}"; then
 fi
 
 
-if ! test $GET_PASS_ONLY_COMMAND = $(echo $0 | sed 's/.*\///g'); then
 {% if encrypted_storage is defined %}
+if ! test $GET_PASS_ONLY_COMMAND = $(echo $0 | sed 's/.*\///g'); then
 {% for item in encrypted_storage %}
   if ! test -e "/dev/mapper/{{ item.name }}"; then
     /sbin/cryptsetup luksOpen "{{ item.backing_device }}" "{{ item.name }}" < "${PASS_PHRASE_FILE_PATH}" \
@@ -115,8 +115,8 @@ if ! test $GET_PASS_ONLY_COMMAND = $(echo $0 | sed 's/.*\///g'); then
       || fail $ERR_MOUNT "Failed to mount:  /{{ item.mount_point }}"
   fi
 {% endfor %}
-{% endif %}
 fi
+{% endif %}
 
 
 for service in openvpn transmission-daemon; do
