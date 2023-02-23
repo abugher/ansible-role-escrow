@@ -1,4 +1,7 @@
 ---
+dependencies:
+  - 'root_keys'
+  - 'ssh_client'
 system_groups:
   - 'escrow'
 system_users:
