@@ -1,7 +1,7 @@
 ---
 dependencies:
-  - 'root_keys'
-  - 'ssh_client'
+  - 'root-keys'
+  - 'ssh-client'
 system_groups:
   - 'escrow'
 system_users:
