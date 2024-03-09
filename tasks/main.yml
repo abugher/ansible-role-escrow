@@ -1,13 +1,13 @@
 ---
-- include:              '../tasks/dependencies.yml'
+- include_tasks:        '../tasks/dependencies.yml'
 - include_vars:         'escrow_user.yml'
 - include_vars:         'storage_password_path.yml'
-- include:              '../tasks/system_groups.yml'
-- include:              '../tasks/system_users.yml'
-- include:              '../tasks/install_files.yml'
-- include:              '../tasks/template_files.yml'
-- include:              '../tasks/symlinks.yml'
-- include:              '../tasks/authorized_keys.yml'
+- include_tasks:        '../tasks/system_groups.yml'
+- include_tasks:        '../tasks/system_users.yml'
+- include_tasks:        '../tasks/install_files.yml'
+- include_tasks:        '../tasks/template_files.yml'
+- include_tasks:        '../tasks/symlinks.yml'
+- include_tasks:        '../tasks/authorized_keys.yml'
   vars:
     authorized_keys:
       - user:           'escrow'
@@ -15,7 +15,7 @@
   with_items:           "{{ groups['escrow'] }}"
   loop_control:
     loop_var:           'member'
-- include:              '../tasks/known_hosts.yml'
+- include_tasks:        '../tasks/known_hosts.yml'
   vars:
     known_hosts:        "{{ groups['escrow'] }}"
-- include:              '../tasks/allow_users.yml'
+- include_tasks:        '../tasks/allow_users.yml'
