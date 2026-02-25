@@ -10,7 +10,7 @@
   vars:
     authorized_keys:
       - user:           'escrow'
-        keyfile:        "inventory/hosts/{{ member }}/users/root/files/ssh_keys/id_rsa.pub"
+        keyfile:        "{{ inventory_path }}/hosts/{{ member }}/users/root/files/ssh_keys/id_rsa.pub"
   with_items:           "{{ groups['escrow'] }}"
   loop_control:
     loop_var:           'member'
